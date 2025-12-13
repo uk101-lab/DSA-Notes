@@ -74,8 +74,61 @@ Output: [0,1]
     }
 };
 ```
+![alt text](image.png)
 
+# LC 15 3SUM
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
 
+Notice that the solution set must not contain duplicate triplets.
+
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+1. Sorting
+2. check duplicates
+3. fixed n1 -> duplicates 
+
+## Code 
+
+``` js
+var twoSum = function(nums, target, i, j, result) {
+    while (i<j) {
+        if (nums[i] + nums[j] > target) 
+            j--;
+        else if (nums[i] + nums[j] < target)
+            i++;
+        else {
+            // first move duplicate from either end
+            while (i<j && nums[i] === nums[i+1]) i++;
+            while (i<j && nums[j] === nums[j-1]) j--;
+
+            result.push([-target, nums[i], nums[j]])
+            i++;
+            j--;
+        }
+    }
+}
+
+var threeSum = function(nums) {
+    let result = [];
+    const n = nums.length;
+    // base case 
+    if (n<3)
+        return [];
+    
+    // firstly sort 
+    nums.sort((a,b) => a-b);
+    // fix one element n1
+    for (let i=0; i<n; i++) {
+        if (i>0 && nums[i] === nums[i-1]) // checks for fixed n1 duplicate
+            continue;
+        let n1 = nums[i];
+        let target = -n1;
+        twoSum(nums, target, i+1, n-1, result); // it will find n2 and n3 : [n1,n2,n3]
+    }
+    return result;
+};
+```
 
 
 
